@@ -6,9 +6,9 @@
 	<style type="text/css">
 		body {
 			width: 100%;
-			height: 100%;	
+			height: 100%;
 			margin: 3% 0;
-			
+
 			font-family: "Open Sans";
 			font-size: 18px;
 			font-style: normal;
@@ -60,7 +60,7 @@
       <select id="midiIn">
         <option value="">No Devices Detected</option>
         <option value="">Can't detect your MIDI device? Try restarting your browser.</option>
-      </select> 
+      </select>
 <br>
       <label style="display: none;">Select MIDI output</label>
       <select id="midiOut" style="display: none;">
@@ -69,17 +69,22 @@
       </select>
 </div>
 
-<script src="OpenWebPiano.js"></script>
-<script>
-	var audioCtx = new AudioContext();
-	openWebPiano.init(audioCtx);
-	function clickBody(event) {
-	    var newNoteNum  = 27 + (88 * event.clientX) / window.innerWidth;
-	    var velocity =  (1 - event.clientY / window.innerHeight) * 127;
-	    console.log(velocity);
-	    openWebPiano.noteOn(newNoteNum, velocity);
-	}
-	document.addEventListener("click", clickBody);
+<script type="module">
+  import * as owp from './OpenWebPiano.js';
+
+  let initialized = false;
+  async function clickBody(event) {
+    if (!initialized) {
+      initialized = true;
+      await owp.init(new AudioContext());
+    }
+    var newNoteNum = 27 + (88 * event.clientX) / window.innerWidth;
+    var velocity = (1 - event.clientY / window.innerHeight) * 127;
+    console.log(velocity);
+    owp.noteOn(newNoteNum, velocity);
+  }
+
+  document.addEventListener("click", clickBody);
 </script>
 <script src="midi.js"></script>
 

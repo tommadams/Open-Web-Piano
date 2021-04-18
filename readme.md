@@ -14,10 +14,11 @@ Simply copy **_openWebPiano.js_** and **_audio_** folder. See index.html for the
 ## Example
 
 ```javascript
-<script src="OpenWebPiano.js"></script>
-<script>
-  var audioCtx = new AudioContext();
-  openWebPiano.init(audioCtx);
+<script type="module">
+  import * as owp from './OpenWebPiano.js';
+
+  await owp.init(new AudioContext());
+
   //on event(note,velocity) ->
   openWebPiano.noteOn(note, velocity);
 </script>
